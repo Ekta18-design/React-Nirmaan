@@ -1,0 +1,236 @@
+
+import React, { FC,useState } from 'react'
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+
+// Define initial form values
+const initialValues = {
+	userid: '',
+	username: '',
+	firstname: '',
+	lastname: '',
+	email: '',
+	phone:'',
+	password: '',
+	confirmpassword: '',
+	role: '',
+	status: {
+		isactive: false,
+		isdeleted: false,
+		
+	},
+};
+const validationSchema = Yup.object({
+  userid: Yup.number().required('UserID is required'),
+  username: Yup.string().required('UserName is required'),
+	firstname: Yup.string().required('FirstName is required'),
+	lastname: Yup.string().required('LastName is required'),
+	phone: Yup.string().required('Phone is required'),
+	email: Yup.string().email('Invalid email address').required('Email is required'),
+  password: Yup.string().required('Password is required'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .required('Confirm Password is required'),
+ 
+  role: Yup.string().required('Role selection is required'),
+  status: Yup.object().shape({
+    isactive: Yup.boolean(),
+    isdeleted: Yup.boolean(),
+    
+  }),
+});
+
+const UserMaster: FC = () => {
+	const [submittedValues, setSubmittedValues] = useState(null);
+
+  const onSubmit = (values) => {
+    setSubmittedValues(values);
+  };
+
+	
+  return (
+    <>
+		<Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+      >
+		 {({ values, handleChange, handleBlur }) => (
+     <Form >
+     
+      <div className='card'>
+        <div className='card-body'>
+          <div className='d-flex flex-wrap flex-sm-nowrap'>
+            <div className='flex-grow-1'>
+              <div className='d-flex justify-content-between align-items-start flex-wrap'>
+                <div className='d-flex flex-column flex-column-fluid'>
+                  <div className='flex-lg-row-fluid me-0'>
+	
+                        <div className="row mb-5">
+													
+													<div className="col-md-6 fv-row">
+													
+														<label className="fs-5 fw-semibold mb-2">User Id</label>
+														
+														<Field type="text" id="userid" className="form-control form-control-solid" placeholder="" name="userid" />
+														<ErrorMessage name="userid" component="div" className="error" />
+														</div>
+													
+													<div className="col-md-6 fv-row">
+													
+														<label className="fs-5 fw-semibold mb-2">User Name</label>
+														
+														<Field type="text" id="username" className="form-control form-control-solid" placeholder="" name="username" />
+														<ErrorMessage name="username" component="div" className="error" />
+														
+														
+												</div>
+                        </div>
+
+                        <div className="row mb-5">
+													
+													<div className="col-md-6 fv-row">
+													
+														<label className="fs-5 fw-semibold mb-2">First Name</label>
+														
+														<Field type="text" id="firstname" className="form-control form-control-solid" placeholder="" name="firstname" />
+														<ErrorMessage name="firstname" component="div" className="error" />
+													
+													</div>
+													
+													<div className="col-md-6 fv-row">
+													
+														<label className="fs-5 fw-semibold mb-2">Last Name</label>
+														
+														<Field type="text" id="lastname" className="form-control form-control-solid" placeholder="" name="lastname" />
+														<ErrorMessage name="lastname" component="div" className="error" />
+														
+												</div>
+                        </div>
+                        <div className="row mb-5">
+													
+													<div className="col-md-6 fv-row">
+													
+														<label className="fs-5 fw-semibold mb-2">Email</label>
+														
+														<Field type="text" id="email" className="form-control form-control-solid" placeholder="" name="email" />
+														<ErrorMessage name="email" component="div" className="error" />
+														
+													
+													</div>
+													
+													<div className="col-md-6 fv-row">
+													
+														<label className="fs-5 fw-semibold mb-2">Phone</label>
+														
+														<Field type="text" id="phone" className="form-control form-control-solid" placeholder="" name="phone" />
+														<ErrorMessage name="phone" component="div" className="error" />
+														
+												</div>
+                        </div>
+                        <div className="row mb-5">
+													
+													<div className="col-md-6 fv-row">
+													
+														<label className="fs-5 fw-semibold mb-2">Password</label>
+														
+														<Field type="text" id="password" className="form-control form-control-solid" placeholder="" name="password" />
+														<ErrorMessage name="password" component="div" className="error" />
+													
+													</div>
+													
+													<div className="col-md-6 fv-row">
+													
+														<label className="fs-5 fw-semibold mb-2">Confirm Password</label>
+														
+														<Field type="text" id="confirmpassword" className="form-control form-control-solid" placeholder="" name="confirmpassword" />
+														<ErrorMessage name="confirmpassword" component="div" className="error" />
+														
+												</div>
+                        </div>
+												<div className="row mb-5">
+													
+													<div className="col-md-6 fv-row">
+													
+														<label className="fs-5 fw-semibold mb-2">Role</label>
+														
+														<Field as="select" className="form-control form-control-solid" id="role" aria-label="Select example" name="role">
+                                       
+                                        <option value="admin">Admin</option>
+                                        <option value="user">User</option>
+                                        
+                               </Field>
+															<ErrorMessage name="role" component="div" className="error" />
+													
+													</div>
+													
+                        </div>
+                      
+                        <div className="row mb-5">
+													
+													<div className="col-md-6 fv-row">
+													
+														<label className="fs-5 fw-semibold mb-2">isActive</label>
+														
+														<div className="form-check form-check-solid form-switch form-check-custom fv-row">
+														<Field className="form-check-input w-45px h-30px" type="checkbox" id="flexSwitchDefault" name="status.isactive"/>
+														</div>
+													
+													</div>
+													
+													<div className="col-md-6 fv-row">
+													
+														<label className="fs-5 fw-semibold mb-2">isDeleted</label>
+														
+														<div className="form-check form-check-solid form-switch form-check-custom fv-row">
+														<Field className="form-check-input w-45px h-30px" type="checkbox" id="flexSwitchDefault" name="status.isdeleted"/>
+														</div>
+													
+												</div>
+                        </div>
+                        <div className="separator mb-8"></div>
+                        <button type="submit" className="btn btn-primary" id="">
+												save
+													</button>
+                        
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          
+        </div>
+      </div>
+      </div>
+      </Form>
+			)}
+			</Formik>
+			{submittedValues && (
+        <div className="submitted-values">
+          <h2>Submitted Values</h2>
+          <p>ID: {submittedValues.userid}</p>
+          <p>Name: {submittedValues.username}</p>
+					<p>FirstName: {submittedValues.firstname}</p>
+					<p>LastName: {submittedValues.lastname}</p>
+          <p>Email: {submittedValues.email}</p>
+					<p>Phone: {submittedValues.phone}</p>
+					<p>Password: {submittedValues.password}</p>
+					<p>ConfirmPassword: {submittedValues.confirmPassword}</p>
+          <p>Role Selection: {submittedValues.role}</p>
+          <p>Status:</p>
+          <ul>
+            {Object.keys(submittedValues.status).map((key) =>
+              submittedValues.status[key] ? (
+                <li key={key}>{key}</li>
+              ) : null
+            )}
+          </ul>
+        </div>
+      )}
+    </>
+  );
+}
+
+export {UserMaster}
